@@ -1,25 +1,25 @@
 #!/usr/bin/node
-const request = require('request');
-const API_URL = 'https://swapi-api.hbtn.io/api';
+const { get } = require('request');
+const id = process.argv[2];
+const baseUrl = `https://swapi-api.hbtn.io/api/films/${id}`;
 
-if (process.argv.length > 2) {
-  request(`${API_URL}/films/${process.argv[2]}/`, (err, _, body) => {
+const getCharacter = (character) => new Promise((resolve, reject) => {
+  get(character, (err, data) => {
     if (err) {
-      console.log(err);
+      reject(err);
+      return;
     }
-    const charactersURL = JSON.parse(body).characters;
-    const charactersName = charactersURL.map(
-      url => new Promise((resolve, reject) => {
-        request(url, (promiseErr, __, charactersReqBody) => {
-          if (promiseErr) {
-            reject(promiseErr);
-          }
-          resolve(JSON.parse(charactersReqBody).name);
-        });
-      }));
 
-    Promise.all(charactersName)
-      .then(names => console.log(names.join('\n')))
-      .catch(allErr => console.log(allErr));
+    const { name } = JSON.parse(data.body);
+    resolve(name);
   });
-}
+});
+
+get(baseUrl, (err, data) => {
+  if (err) console.error(err);
+  const { characters } = JSON.parse(data.body);
+
+  const promises = characters.map(character => getCharacter(character));
+
+  Promise.all(promises).then(names => names.forEach(name => console.log(name)));
+});
