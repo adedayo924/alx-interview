@@ -12,7 +12,7 @@
     File: 0-starwars_characters.js
 
 ## Example
-    aysuarex@ubuntu:~/0x06$ ./0-starwars_characters.js 3
+    ./0-starwars_characters.js 3
     Luke Skywalker
     C-3PO
     R2-D2
@@ -33,8 +33,4 @@
     Wicket Systri Warrick
     Nien Nunb
     Bib Fortuna
-    alexa@ubuntu:~/0x06$ 
-
-## Resources
-- [swapi-api.hbtn.io](https://swapi-api.hbtn.io/)    
-- [request module](https://github.com/request/request)  
+   
